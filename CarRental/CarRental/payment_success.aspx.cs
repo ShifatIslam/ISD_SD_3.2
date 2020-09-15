@@ -19,9 +19,12 @@ namespace CarRental
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            Order_deatils();
-            PaymentInfo();
-            
+            if (!IsPostBack)
+            {
+                Order_deatils(); //save the order details
+                PaymentInfo(); //save the payment info along with the last order
+            }
+
         }
 
         void PaymentInfo()
@@ -59,7 +62,7 @@ namespace CarRental
                     }
 
                 conn.Close();
-                DeleteCart();
+                DeleteCart(); //delete saved cart when completes payment
 
             }
             catch (Exception ex)
@@ -69,6 +72,8 @@ namespace CarRental
         }
         protected void Order_deatils()
         {
+            var orderid="";
+           var curtime = "";
             try
             {
                 SqlConnection conn = new SqlConnection(strcon);
@@ -84,17 +89,16 @@ namespace CarRental
                 da.Fill(dt);
                 foreach(DataRow dr in dt.Rows)
                 {
-                    var orderid = dr["OrderId"].ToString().Trim();
+                    orderid = dr["OrderId"].ToString().Trim();
                     var carid = dr["Carid"].ToString().Trim();
                     var pickdate = dr["PickupDate"].ToString().Trim();
                     var retdate = dr["ReturnDate"].ToString().Trim();
                     var costvalue = dr["CostPerValue"].ToString().Trim();
                     DateTime currenttime = DateTime.Now;
-                    var curtime = currenttime.ToString().Trim();
+                    curtime = currenttime.ToString().Trim();
                     var service = dr["Service"].ToString().Trim();
                     var rentday = dr["RentalDays"].ToString().Trim();
-                    Session["LastOrderID"] = orderid;
-                    Session["LastCurrentTime"] = curtime;
+                    
                         SqlCommand cmd1 = new SqlCommand("INSERT INTO OrderDetails(Orderid,Userid,Carid,pickupdate,returndate,Costitem,Grandtotal,Ordertime,Servicetaken,rentaldays)" +
                     "values(@Orderid,@Userid,@Carid,@pickupdate,@returndate,@Costitem,@Grandtotal,@Ordertime,@Servicetaken,@rentaldays)", conn);
 
@@ -114,6 +118,8 @@ namespace CarRental
                     cmd1 = new SqlCommand("Update CarDetails  SET currentStock = (currentStock - 1) WHERE CarID ='" + carid.ToString().Trim() + "'", conn);
                     cmd1.ExecuteNonQuery();
                 }
+                Session["LastOrderID"] = orderid; //get the last issued order
+                Session["LastCurrentTime"] = curtime; //last issued time of the order
                 conn.Close();
                 
 

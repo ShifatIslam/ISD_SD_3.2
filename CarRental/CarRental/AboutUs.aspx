@@ -19,6 +19,7 @@
         </div>
         
     </div>
+    <!--for parallax view -->
     <div id="parallax" class="mt-5"></div>
     <div class="container">
             <div class="row">
@@ -57,7 +58,7 @@
                 </div>
             </div>
         </div>
-
+    <!--for carousel-->
     <div class="container comments ">
         <div id="myCarousel" class="carousel slide mt-4">
          

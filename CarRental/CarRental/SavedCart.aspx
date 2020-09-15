@@ -60,7 +60,7 @@
                      </div>
                   </div>
         <div class="row float-right">
-            <asp:Label runat="server" class=" h6  text-dark">You have to pay </asp:Label><asp:TextBox ID="TextBox1"  class=" text-primary font-weight-bold" runat="server" ReadOnly="true"></asp:TextBox>
+            <asp:Label runat="server" class=" h6  text-dark">You have to pay </asp:Label><asp:TextBox ID="TextBox1"  class=" text-primary font-weight-bold text-center ml-2" runat="server" ReadOnly="true"></asp:TextBox>
         </div>
         <div class="row">
            <a href="ViewCarsUser.aspx" id="backButton" class="btn btn-outline-dark btn-lg font-weight-bolder mb-5 p-2" runat="server">

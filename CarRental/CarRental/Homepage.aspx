@@ -82,15 +82,9 @@
                        THE BEST PLACE FOR FINDING<br />
                        CAR SERVICES AND RENTAL<br />
                    </p>
-                   <p class="place">
-                       Maecenas volutpat, odio eget imperdiet faucibus, dui diam placerat turpis, non<br /> 
-                       semper leo quam fringilla orci. Etiam vitae fringilla leo. Cras mollis ex vel mauris<br />
-                       ullamcorper porta. Proin est felis, venenatis sed ex sit amet, luctus dictum tellus.<br /> 
-                       Etiam porttitor, felis facilisis feugiat egestas, mi ipsum varius tortor, vel varius <br />
-                       lorem nulla non tortor. Nulla vel ligula vehicula, posuere erat imperdiet, <br />
-                       consequat ante. Sed vestibulum, elit non interdum tempor, diam justo venenatis<br />
-                       arcu, eget ullamcorper elit ex sed risus. Ut sagittis tincidunt lectus, id tempor <br />
-                       felis auctor eu. Donec feugiat vehicula risus ut tristique.<br />
+                   <p class="place" style="line-height:25px;">
+                      Your One way to stop to find and rent cars to your choice.
+                       We are here for you.
                    </p>
                         <asp:Button ID="Button7" class ="mb-4" runat="server" Text="READ MORE"  BackColor="#1B1B1B" ForeColor="wheat" Font-Size="15px" Font-Bold="true"  BorderStyle="Solid" BorderWidth="1" white-space="pre-line" line-height="0px" Height="50px" OnClick="Button7_Click" />
 
@@ -100,10 +94,9 @@
                    <img src ="images/ferrari2.jpg" class="img-fluid car-price" />
                     <div id ="top-left">
                        CAR PRICE
-                       <p class="place">
-                       Donec augue enim, volutpat at ligula et, dictum laoreet sapien. <br />
-                      Sed maximus feugiat tincidunt. Vestibulum ante<br />
-                      ipsum primis in faucibus orci luctus 
+                       <p class="place" style="line-height:25px;">
+                      Reasonable car price at your doorsteps.
+                      Come and find what you need.
                       </p>
                         <asp:Button ID="Button3" runat="server" Text="READ MORE"  BackColor="#1B1B1B" ForeColor="wheat" Font-Size="15px" Font-Bold="true"  BorderStyle="Solid" BorderWidth="1" white-space="pre-line" line-height="0px" Height="50px" OnClick="Button3_Click" />
                    </div>
@@ -114,12 +107,9 @@
                <div id="third_tag">
                    <div id="about">
                        ABOUT US
-                       <p class="place">
-                           Praesent a lectus turpis. Sed malesuada dolor nec mi scelerisque sem non congue sapien<br />
-                           fringilla nec. Nulla facilisi. Cras vitae nunc vehicula, tincidunt Nunc iaculis ipsum eget,<br />
-                            accumsan urna.  efficitur lacus sit amet ornare.Cras ac ultrices nisi, a ullamcorper leo.<br />
-                             Nunc bibendum vulputate porttitor. Nunc nec magna eget augue vehicula porta.<br />
-                            Aliquam vitae massa arcu. Duis lorem nisi,pretium tincidunt nulla.<br />
+                       <p class="place" style="line-height:25px;">
+                           We are some bachelors students tryong to build a proto of car rental website.
+                           There will be some bugs.Your consideration is much appreciated and please do let us know.
                        </p>
                         <asp:Button ID="Button4" runat="server" Text="READ MORE"  BackColor="red" ForeColor="FloralWhite" Font-Size="15px" Font-Bold="true"  BorderStyle="Solid" BorderWidth="1" white-space="pre-line" line-height="0px" Height="50px" OnClick="Button4_Click" />
 

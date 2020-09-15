@@ -6,7 +6,7 @@
     
      <script type ="text/javascript">
       
-
+ //no need done it backend
   $(function(){
     var dtToday = new Date();
     
@@ -28,7 +28,7 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server" >
- 
+  <!--self driving-->
     <div class="container mt-5 mb-3" >
         <div class="row">
             <div class="col-md-6 col-sm-12" id="selfDriving" runat ="server">
@@ -105,7 +105,7 @@
                     </div>
                 </div>
             </div>
-
+            <!--with driver-->
             <div class="col-md-6 col-sm-12" id="withDriver" runat ="server">
                 <div class ="card">
                     <div class="card-body">

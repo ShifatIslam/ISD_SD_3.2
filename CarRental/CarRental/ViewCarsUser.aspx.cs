@@ -15,7 +15,10 @@ namespace CarRental
         string strcon = ConfigurationManager.ConnectionStrings["con"].ConnectionString; 
         protected void Page_Load(object sender, EventArgs e)
         {
-            CheckIfUserHasRented(); //check on page load if user has already rented a car
+            var user = Session["user"];
+            if(user!=null )
+                if(!IsPostBack)
+                    CheckIfUserHasRented(); //check on page load if user has already rented a car
         }
 
 

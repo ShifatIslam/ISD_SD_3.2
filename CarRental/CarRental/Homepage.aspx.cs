@@ -19,7 +19,7 @@ namespace CarRental
         {
             var user = Session["username"];
             if(user != null)
-                CheckIfTodayisPickupReturnDate();
+                CheckIfTodayisPickupReturnDate(); //check if current date is the pick up or return date
 
             if (!IsPostBack)
            {
@@ -34,7 +34,7 @@ namespace CarRental
                         lblModalTitle.Text = "Notification for Unchecked Cart";
                         lblModalBody.Text = "You have an unchecked cart.Would you like to take a look?";
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModal", "$('#myModal').modal();", true);
-                        upModal.Update();
+                        upModal.Update(); //update the modal
                         
                     }
                 }
@@ -42,17 +42,17 @@ namespace CarRental
            }
         }
         
-        protected void Button3_Click(object sender, EventArgs e)
+        protected void Button3_Click(object sender, EventArgs e) //Car price button
         {
             Response.Redirect("ViewCarsUser.aspx");
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
+        protected void Button1_Click(object sender, EventArgs e)// offer on weeekends not implemented
         {
             Response.Redirect("ViewCarsUser.aspx");
         }
 
-        protected void Button7_Click(object sender, EventArgs e)
+        protected void Button7_Click(object sender, EventArgs e)//button of The best place for service 
         {
             Response.Redirect("Services.aspx");
         }
@@ -112,7 +112,7 @@ namespace CarRental
                         DateTime currentDate = DateTime.Now;
                         if (pickupDate.Date == currentDate.Date)
                             Response.Write("<script>alert('You are requested to pickup your order no. " + orderid + " today. ');</script>");
-                        if (retdate != "")
+                        if (retdate != "") //check for airport and hourly as no need return date there
                         {
                             var retDate = Convert.ToDateTime(retdate);
                             if (retDate == currentDate)
@@ -132,7 +132,7 @@ namespace CarRental
             }
         }
 
-        protected void Button4_Click(object sender, EventArgs e)
+        protected void Button4_Click(object sender, EventArgs e) // button of About us 
         {
             Response.Redirect("AboutUs.aspx");
         }

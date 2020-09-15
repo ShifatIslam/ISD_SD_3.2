@@ -10,7 +10,7 @@
           $(".table").prepend($("<thead></thead>").append($(this).find("tr:first"))).dataTable();
           //$('.table1').DataTable();
       });
- 
+       //for file upload
        function readURL(input) {
            if (input.files && input.files[0]) {
                var reader = new FileReader();
@@ -284,6 +284,8 @@
                         <hr>
                      </div>
                   </div>
+                   <!-- adding car info ended here -->
+                   <!-- gridview to show added cars -->
                   <div class="row">
                       <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:CarRentalConnectionString %>" SelectCommand="SELECT * FROM [CarDetails]"></asp:SqlDataSource>
                      <div class="col">

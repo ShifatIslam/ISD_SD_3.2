@@ -17,7 +17,7 @@ namespace CarRental
 
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
+        protected void Button1_Click(object sender, EventArgs e) //Send Message
         {
             try
             {
@@ -44,6 +44,7 @@ namespace CarRental
 
                 cmd.ExecuteNonQuery();
                 conn.Close();
+                Response.Write("<script>alert('Your messsage has been saved.Thank you for contacting.');</script>");
                 cleartable();
             }
             catch (Exception ex)
@@ -51,7 +52,7 @@ namespace CarRental
                 Response.Write("<script>alert('" + ex.Message + "');</script>");
             }
         }
-        void cleartable()
+        void cleartable() //clears the form
         {
             name.Value = "";
             email.Value = "";

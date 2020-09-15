@@ -1865,8 +1865,11 @@
     <Content Include="images\like.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\logo1.jpg" />
+    <Content Include="images\lost%281%29.jpg" />
+    <Content Include="images\midnight sky1.jpg" />
     <Content Include="images\model.png" />
     <Content Include="images\month.png" />
+    <Content Include="images\moonlit night.jpg" />
     <Content Include="images\new-york.png" />
     <Content Include="images\partnership%281%29.png" />
     <Content Include="images\partnership.png" />
@@ -1874,6 +1877,7 @@
     <Content Include="images\road.png" />
     <Content Include="images\service.jpg" />
     <Content Include="images\servicing.png" />
+    <Content Include="images\sunset.jpg" />
     <Content Include="images\support%281%29.png" />
     <Content Include="images\support.png" />
     <Content Include="images\suzuha.jpg" />
@@ -1919,6 +1923,7 @@
     <Content Include="images\yaris\8.jpg" />
     <Content Include="images\yaris\9.jpg" />
     <Content Include="images\your_rent.jpg" />
+    <Content Include="images\zaydan-akbar-picsart-08-28-05-20-25.jpg" />
     <Content Include="Membermanagement.aspx" />
     <Content Include="PaymentAdmin.aspx" />
     <Content Include="PaymentgateWay.aspx" />
@@ -1938,6 +1943,8 @@
     <Content Include="UserProfile.aspx" />
     <Content Include="UserSignUp.aspx" />
     <Content Include="Vellfire.aspx" />
+    <Content Include="video\2020 Toyota Vellfire review - First Drive - OVERDRIVE - YouTube.mp4" />
+    <Content Include="video\Official Review - Bamwheels - Toyota Corolla Axio - YouTube.mp4" />
     <Content Include="ViewCarsUser.aspx" />
     <Content Include="WebForm1.aspx" />
     <Content Include="Yaris.aspx" />
@@ -2201,7 +2208,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="CarImage\" />
     <Folder Include="Cars\" />
-    <Folder Include="video\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

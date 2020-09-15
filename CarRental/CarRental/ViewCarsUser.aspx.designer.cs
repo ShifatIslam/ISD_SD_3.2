@@ -40,6 +40,15 @@ namespace CarRental {
         protected global::System.Web.UI.WebControls.BulletedList BulletedList2;
         
         /// <summary>
+        /// BulletedList4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.BulletedList BulletedList4;
+        
+        /// <summary>
         /// Panel1 control.
         /// </summary>
         /// <remarks>

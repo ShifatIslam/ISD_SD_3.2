@@ -44,6 +44,8 @@ namespace CarRental
                 else if (Session["role"].Equals("user"))
                 {
                     //setting for the human
+                    if (!IsPostBack)
+                        SavedCartNotification();
                     LinkButton1.Visible = false;//login
                     LinkButton2.Visible = false;//signup
 
@@ -61,7 +63,8 @@ namespace CarRental
                 }
                 else if (Session["role"].Equals("admin"))
                 {
-                    Sendnotification();
+                    if(!IsPostBack)
+                        Sendnotification();
                     //setting for only meeeee ^~^
                     LinkButton1.Visible = false;//login
                     LinkButton2.Visible = false;//signup
@@ -198,6 +201,33 @@ namespace CarRental
             {
                 b = a.ToString();
                 return b.ToString();
+            }
+        }
+
+        protected void SavedCartNotification()
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection(strcon);
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                if (Session["role"].Equals("user"))
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM SavedCart WHERE UserID='" + Session["username"].ToString().Trim() + "'", conn);
+                    DataTable dt = new DataTable();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                    count = Convert.ToInt32(dt.Rows.Count.ToString());
+                    savedcartcount.Text = count.ToString();
+
+
+                }
+            }
+            catch(Exception ex)
+            {
+                Response.Write("<script>alert('" + ex.Message + "');</script>");
             }
         }
 

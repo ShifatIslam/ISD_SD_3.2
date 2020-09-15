@@ -21,6 +21,7 @@
                                    <asp:ListItem>DC -- Daily Transfer</asp:ListItem>
                                    <asp:ListItem>IC -- Inside City Transfer</asp:ListItem>
                                    <asp:ListItem>OC -- Outside City Transfer</asp:ListItem>
+                                   <asp:ListItem>Daily and monthly rent is given in per days and hourly is given in 4 hours.</asp:ListItem>
                                </asp:BulletedList>
                                <asp:Label class="font-weight-bold text-dark" runat="server">Airport Transfer Info</asp:Label>
                                <asp:BulletedList ID="BulletedList1" runat="server" BulletStyle="Square"> 
@@ -33,10 +34,16 @@
                                    <asp:ListItem >This fee is for first 4 hours service including CNG/Fuel Cost. </asp:ListItem>
                                    <asp:ListItem >For every additional hour 250 taka will be added.</asp:ListItem>
                                </asp:BulletedList>
+                               <asp:Label class="font-weight-bold text-dark" runat="server">Monthly Rental Info</asp:Label>
+                               <asp:BulletedList ID="BulletedList4" runat="server" BulletStyle="Square"> 
+                                   <asp:ListItem >For monthly you can rent for 5 days highest 2 times in a month</asp:ListItem>
+                                   
+                               </asp:BulletedList>
                            </div> 
                        </div>
                        
             </div>
+            <!--Gridview-->
             <div class="col-sm-12">
                 <div class=" h3 text-center">All Cars List</div>
             </div>
@@ -172,7 +179,7 @@
                                             <div class="row">
                                                 <div class="col-lg-10"></div>
                                                 <div class="col-lg-2 float-right">
-                                                    <span class="ml-3  p-0"><asp:Label ID="Costing" runat="server" Text='<%# Eval("Cost") %>' Font-Bold="True" Font-Size="Large"></asp:Label>Taka</span>
+                                                    <span class="ml-3  p-0"><asp:Label ID="Costing" runat="server" Text='<%# Eval("Cost") %>' Font-Bold="True" Font-Size="Large"></asp:Label> $</span>
                                                     <br />
                                                     <asp:Button ID="Bookbtn" class="btn btn-primary text-light text-center font-weight-bold" runat="server" Text="Book Now"  CommandName="Select" CommandArgument="<%# Container.DataItemIndex %>" />
                                                    <br />

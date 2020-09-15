@@ -18,11 +18,8 @@ namespace CarRental
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Auto input driving license
-            Checkdrivinglicense();
-            //Visibility
-            btnSubmits.Visible = false;
-            btnSubmit.Visible = false;
+            btnSubmits.Attributes["style"] = "visibility:hidden;";
+            btnSubmit.Attributes["style"] = "visibility:hidden;";
             RetDate.Visible = true;
             RetTime.Visible = true;
             DriveReturn.Visible = true;
@@ -31,7 +28,17 @@ namespace CarRental
             round_trip1.Visible = false;
             count_hours_1.Visible = false;
             count_hours.Visible = false;
-            AirportService(); //Page reworked
+            //Auto input driving license
+            var user = Session["username"];
+            var service = Session["services"];
+            if (user != null && service != null)
+            {
+                Checkdrivinglicense();//check for license  if not self driving will be disabled 
+                AirportService(); //Page reworked
+            }
+            //Visibility
+            
+            
 
 
         }
@@ -71,7 +78,7 @@ namespace CarRental
             }
         }
 
-        protected int SubTotal(double days, int hours, int hours_rate)
+        protected int SubTotal(double days, int hours, int hours_rate) //grand value of each item  of how musch it costs 
         {
 
             try
@@ -86,7 +93,7 @@ namespace CarRental
                 DataTable da = new DataTable();
                 dt.Fill(da);
                 int rows = da.Rows.Count;
-                foreach(DataRow row in da.Rows)
+                foreach(DataRow row in da.Rows)//to get grand total of each item
                 {
                     if(hours_rate == 1)
                         grand_value += Convert.ToInt32(row["Cost"].ToString().Trim()) * (int)days * hours;
@@ -103,31 +110,34 @@ namespace CarRental
         }
 
 
-        protected void btnSubmits_Click(object sender, EventArgs e)//save the cart of user in db
+        protected void btnSubmits_Click(object sender, EventArgs e)//save the cart of user in db ; self driver 
         {
             addsavedcart();
         }
         void addsavedcart()
         {
-            if(checkDate() == true)
+            if(checkDate() == true) //checks for dates smaller than current date = invalid
             {
                 Response.Write("<script>alert('Invalid date given');</script>");
             }
             else
             {
                 var PickupDate = Pickup.Value;
+                var Driverpickdate = DriverPickup.Value;
                 var ReturnDate = "";
+                var DriverretDate = "";
                 double days = 1;
                 int hours = 1;
                 int hours_rate = 1;
                 var pickuploc = location_self.Value.ToString();
+                var driverpickup = location_driver.Value.ToString();
                 var total_price = Session["taka"];
                 Session["tot_price"] = total_price;
                 if (Session["services"].ToString() == "Airport Transfer")
                 {
 
                 }
-                else if(Session["services"].ToString() == "Hourly Rate")
+                else if(Session["services"].ToString() == "Hourly Rate")//if hourly get hours
                 {
                     if (count_hours_text.Text.ToString().Trim() == "")
                     {
@@ -137,96 +147,156 @@ namespace CarRental
                     else
                         hours = Convert.ToInt32(count_hours_text.Text.ToString().Trim());
                     if (hours > 4)
-                        hours_rate = (hours - 4) * 250;
+                        hours_rate = (hours - 4) * 3; //if hours is more than 4 extra 250 added
                     
-                    total_price = SubTotal(days, hours,hours_rate);
-                    Session["tot_price"] = total_price;
+                    
+                }
+                else if (Session["services"].ToString() == "Daily Basis" || Session["services"].ToString() == "Monthly Car Rental")
+                {
+                    //get days from monthly and daily
+                    ReturnDate = returndate.Value;
+                    DriverretDate = DriverReturn.Value;
+                    if(DriverretDate.ToString().Trim() != "" )
+                        days = (Convert.ToDateTime(DriverretDate) - Convert.ToDateTime(Driverpickdate)).TotalDays;
+                    else if(ReturnDate.ToString().Trim() != "")
+                        days = (Convert.ToDateTime(ReturnDate) - Convert.ToDateTime(PickupDate)).TotalDays;
+
+
+
+                }
+                if (CheckDaysExceed() == true && Session["services"].ToString() == "Daily Basis" || Session["services"].ToString() == "Monthly Car Rental")
+                {
+                    //if days are >5  in monthly and  >15 in daily it will return true 
                 }
                 else
                 {
-                    ReturnDate = returndate.Value;
-                    days = (Convert.ToDateTime(ReturnDate) - Convert.ToDateTime(PickupDate)).TotalDays;
-                    total_price = SubTotal(days,hours,hours_rate);
+                    total_price = SubTotal(days, hours, hours_rate);//go to subtotal to find price of each item
                     Session["tot_price"] = total_price;
-                }
 
-                try
-                {
-                    SqlConnection conn = new SqlConnection(strcon);
-                    if (conn.State == ConnectionState.Closed)
+
+                    //save these in SavedCart datatable
+                    try
                     {
-                        conn.Open(); //connection open plz
+                        SqlConnection conn = new SqlConnection(strcon);
+                        if (conn.State == ConnectionState.Closed)
+                        {
+                            conn.Open(); //connection open plz
+                        }
+                        SqlCommand cmd = new SqlCommand("INSERT INTO SavedCart(UserID,Carid,Service,PickupDate,ReturnDate,RentalDays,CostPerValue,GrandTotal,CarImage,PickupLocation)" +
+                            "values(@UserID,@Carid,@Service,@PickupDate,@ReturnDate,@RentalDays,@CostPerValue,@GrandTotal,@CarImage,@PickupLocation)", conn);
+                        cmd.Parameters.AddWithValue("@UserID", Session["username"].ToString().Trim());
+                        cmd.Parameters.AddWithValue("@Carid", Session["carid"].ToString().Trim());
+                        cmd.Parameters.AddWithValue("@Service", Session["services"].ToString().Trim());
+                        if(PickupDate.ToString().Trim() != "")
+                            cmd.Parameters.AddWithValue("@PickupDate", PickupDate.ToString().Trim());
+                        else
+                            cmd.Parameters.AddWithValue("@PickupDate", Driverpickdate.ToString().Trim());
+                        if (Session["services"].ToString() == "Airport Transfer")
+                        {
+                            cmd.Parameters.AddWithValue("@ReturnDate", "");
+                            cmd.Parameters.AddWithValue("@RentalDays", 1);
+                        }
+                        else
+                        {
+                           if(ReturnDate.ToString().Trim() != "")
+                                cmd.Parameters.AddWithValue("@ReturnDate", ReturnDate.ToString().Trim());
+                           else
+                                cmd.Parameters.AddWithValue("@ReturnDate", DriverretDate.ToString().Trim());
+                            cmd.Parameters.AddWithValue("@RentalDays", days.ToString().Trim());
+                        }
+                        cmd.Parameters.AddWithValue("@CostPerValue", Session["taka"].ToString().Trim());
+                        cmd.Parameters.AddWithValue("@GrandTotal", total_price.ToString().Trim());
+                        cmd.Parameters.AddWithValue("@CarImage", Session["imagepath"]);
+                        if(pickuploc.ToString().Trim() != "")
+                            cmd.Parameters.AddWithValue("@PickupLocation", pickuploc.ToString().Trim());
+                        else
+                            cmd.Parameters.AddWithValue("@PickupLocation", driverpickup.ToString().Trim());
+
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                        Response.Redirect("SavedCart.aspx");
+
+
                     }
-                    SqlCommand cmd = new SqlCommand("INSERT INTO SavedCart(UserID,Carid,Service,PickupDate,ReturnDate,RentalDays,CostPerValue,GrandTotal,CarImage,PickupLocation)" +
-                        "values(@UserID,@Carid,@Service,@PickupDate,@ReturnDate,@RentalDays,@CostPerValue,@GrandTotal,@CarImage,@PickupLocation)", conn);
-                    cmd.Parameters.AddWithValue("@UserID", Session["username"].ToString().Trim());
-                    cmd.Parameters.AddWithValue("@Carid", Session["carid"].ToString().Trim());
-                    cmd.Parameters.AddWithValue("@Service", Session["services"].ToString().Trim());
-                    cmd.Parameters.AddWithValue("@PickupDate", PickupDate.ToString().Trim());
-                    if (Session["services"].ToString() == "Airport Transfer")
+                    catch (Exception ex)
                     {
-                        cmd.Parameters.AddWithValue("@ReturnDate", "");
-                        cmd.Parameters.AddWithValue("@RentalDays", 1);
+                        Response.Write("<script>alert('" + ex.Message + "');</script>");
+
                     }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@ReturnDate", ReturnDate.ToString().Trim());
-                        cmd.Parameters.AddWithValue("@RentalDays", days.ToString().Trim());
-                    }
-                    cmd.Parameters.AddWithValue("@CostPerValue", Session["taka"].ToString().Trim());
-                    cmd.Parameters.AddWithValue("@GrandTotal", total_price.ToString().Trim());
-                    cmd.Parameters.AddWithValue("@CarImage", Session["imagepath"]);
-                    cmd.Parameters.AddWithValue("@PickupLocation", pickuploc.ToString().Trim());
-
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-
-                    Response.Redirect("SavedCart.aspx");
-
-
-                }
-                catch (Exception ex)
-                {
-                    Response.Write("<script>alert('" + ex.Message + "');</script>");
-
                 }
             }
             
            
             
         }
+        bool CheckDaysExceed()//for checking the dates in monthly and daily
+        {
+            //2 parts one is with driver and other is self driving bothe needs to be checked
+            if (Session["services"].ToString() == "Airport Transfer" || Session["services"].ToString() == "Hourly Rate")
+                return false;
+            var PickupDate = Pickup.Value;
+            var ReturnDate = "";
+            
+            var DriverretDate = "";
+            double days = 1;
+            
+            ReturnDate = returndate.Value;
+            var Driverpickdate = DriverPickup.Value;
+            DriverretDate = DriverReturn.Value;
+
+
+
+                if (DriverretDate.ToString().Trim() != "")
+                    days = (Convert.ToDateTime(DriverretDate) - Convert.ToDateTime(Driverpickdate)).TotalDays;
+                else if (ReturnDate.ToString().Trim() != "")
+                    days = (Convert.ToDateTime(ReturnDate) - Convert.ToDateTime(PickupDate)).TotalDays;
+                if (days > 5 && Session["services"].ToString() == "Monthly Car Rental") //monthly return true if days > 5
+                {
+                    Response.Write("<script>alert('Please switch to daily basis for more days!');</script>");
+                    return true;
+
+                }
+                if (days > 15 && Session["services"].ToString() == "Daily Basis") //daily return true if days >15
+                {
+                    Response.Write("<script>alert('You are not allowed to rent cars more than 15 days!');</script>");
+                    return true;
+                }
+            
+            return false;
+        }
 
         protected void check_CheckedChanged(object sender, EventArgs e) //checkbox changed to hide or show button
         {
             if (check.Checked)
             {
-                btnSubmits.Visible = true;
+                btnSubmits.Attributes["style"] = "visibility:visible;";
                 withDriver.Attributes["style"] = "opacity:0.5; pointer-events:none;";
             }
             else
             {
-                btnSubmits.Visible = false;
+                btnSubmits.Attributes["style"] = "visibility:hidden;";
                 withDriver.Attributes["style"] = "opacity:1; pointer-events:auto;";
             }
         }
-        protected void check1_CheckedChanged(object sender, EventArgs e)
+        protected void check1_CheckedChanged(object sender, EventArgs e)//with driver
         {
             if (CheckDriver.Checked)
             {
-                btnSubmit.Visible = true;
+                btnSubmit.Attributes["style"] = "visibility:visible;";
                 selfDriving.Attributes["style"] = "opacity:0.5; pointer-events:none;";
             }
             else
             {
-                btnSubmit.Visible = false;
+                btnSubmit.Attributes["style"] = "visibility:hidden;";
                 selfDriving.Attributes["style"] = "opacity:1; pointer-events:auto;";
             }
         }
-        protected void check2_CheckedChanged(object sender, EventArgs e)
+        protected void check2_CheckedChanged(object sender, EventArgs e)//for round trip
         {
             if (CheckRound.Checked || CheckRound1.Checked)
             {
-                Session["taka"] =  Convert.ToInt32(Session["taka"]) + 500;
+                Session["taka"] =  Convert.ToInt32(Session["taka"]) + 6;
             }
             
         }
@@ -241,7 +311,7 @@ namespace CarRental
                 round_trip.Visible = true;
                 round_trip1.Visible = true;
             }
-            if (Session["services"].ToString() == "Hourly Rate")
+            if (Session["services"].ToString() == "Hourly Rate")//hourly page reworked
             {
                 RetDate.Visible = false;
                 RetTime.Visible = false;
@@ -253,7 +323,7 @@ namespace CarRental
         }
   
 
-        bool checkDate()
+        bool checkDate()//checks if entered previous dates
         {
             var selfpick = Pickup.Value;
             var driverpick = DriverPickup.Value;
@@ -274,7 +344,7 @@ namespace CarRental
             return false;
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected void btnSubmit_Click(object sender, EventArgs e)//will inittiate function for with driver side
         {
             addsavedcart();
         }

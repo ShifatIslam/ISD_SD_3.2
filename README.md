@@ -1,6 +1,6 @@
 Project Description
 
-To initiialize the project move the whole project to your pc  and move the .mdf file to sql server and attach it.
+To initiialize the project clone the whole project or download zip to your pc  and move the .mdf file to sql server and attach it.
 
 
 To sign up Please take the info from UserReg in Sql Server to Sign up to the website . 
